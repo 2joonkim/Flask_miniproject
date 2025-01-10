@@ -24,4 +24,3 @@ pip3 install -r requirements.txt
 https://www.notion.so/Flask-mini-project-Day1-177caf5650aa802081f0d97fb7c69c2a
 
 위 접속하시어 확인 부탁드립니다 :) 잘해보아용~!
-
