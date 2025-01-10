@@ -1,6 +1,6 @@
 from datetime import datetime
-from enum import Enum
 from zoneinfo import ZoneInfo
+from enum import Enum
 
 from config import db
 
