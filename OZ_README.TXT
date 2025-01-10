@@ -18,15 +18,10 @@ pip3 install --upgrade pip
 
 pip3 install -r requirements.txt
 
-touch run.py config.py wsgi.py form.conf
-
-mkdir app && cd app
-
-touch __init__.py models.py routes.py
-mkdir views && cd views
-
-touch answers.py choices.py images.py questions.py users.py
-
 위에 있는 모든 명령어 진행하여 가상환경 접속 후 코드 짜주시면 됩니다!! 
+프로젝트에 필요한 폴더 및 파이썬파일의 경우 만들어 두었습니다! 
 
+https://www.notion.so/Flask-mini-project-Day1-177caf5650aa802081f0d97fb7c69c2a
+
+위 접속하시어 확인 부탁드립니다 :) 잘해보아용~!
 
