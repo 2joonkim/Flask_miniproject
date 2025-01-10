@@ -1,11 +1,30 @@
-#QUESTION
+#question 조회
 def get_question(question_id):
     question = Question.query.get(question_id)
     return question
 
-#ANSWER
+#question 생성
+def create_question(text):
+    question = Question(
+        text=text
+    )
+    db.session.add(question)
+    db.session.commit()
+    return question
+
+#qnswer 조회
 def get_answer(answer_id):
     answer = Answer.query.get(answer_id)
+    return answer
+
+#qnswer 생성
+def create_answer(text, question_id):
+    answer = Answer(
+        text=text,
+        question_id=question_id
+    )
+    db.session.add(answer)
+    db.session.commit()
     return answer
 
 #image 조회
