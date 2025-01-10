@@ -56,4 +56,3 @@ https://www.notion.so/Flask-mini-project-Day1-177caf5650aa802081f0d97fb7c69c2a
 
 <!-- 5. 개선사항 [주관식] -->
 <p><strong>5. 개선사항</strong> (주관식)</p>
-<textarea name="improvements" rows="4" cols="50"></textarea>
