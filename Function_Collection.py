@@ -12,12 +12,12 @@ def create_question(text):
     db.session.commit()
     return question
 
-#qnswer 조회
+#answer 조회
 def get_answer(answer_id):
     answer = Answer.query.get(answer_id)
     return answer
 
-#qnswer 생성
+#answer 생성
 def create_answer(text, question_id):
     answer = Answer(
         text=text,
