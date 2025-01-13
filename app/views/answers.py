@@ -15,7 +15,7 @@ def create_choice(question_id):
     # 선택지 생성
     # sqe는 순서나 다른 관련정보를 나타내는 값입니다. ex. 질문1 / 질문2 등
     choice = Choices(
-        content=data['content'],
+        content=data['content'], #만약 없을 시 500 서버 에러
         sqe=data['sqe'],
         question_id=question.id
     )

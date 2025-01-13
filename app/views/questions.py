@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, Question  # 데이터베이스 모델 직접 사용
+from app.models import db, Question, Image  # 데이터베이스 모델 직접 사용
 
 # Blueprint 생성
 questions_bp = Blueprint("questions", __name__)  # "questions"라는 이름의 블루프린트 생성
@@ -52,5 +52,6 @@ def create_new_question():
     # 생성된 질문 데이터를 JSON 형태로 반환
     return jsonify({
         "id": new_question.id, 
-        "title": new_question.title 
+        "title": new_question.title,
+        "image": new_question.image.to_dict() if new_question.image else None
     }), 201  
