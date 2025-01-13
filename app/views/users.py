@@ -2,6 +2,8 @@ from flask import Flask, Blueprint, request, jsonify
 from app.models import User
 from app import db
 
+app = Flask(__name__)
+
 # Blueprint 생성
 user_bp = Blueprint('user', __name__)
 
@@ -52,10 +54,3 @@ def get_user(user_id):
         'gender': user.gender,  # 유저의 성별
         'email': user.email  # 유저의 이메일
     }), 200
-
-# Flask 앱 생성 및 Blueprint 등록
-app = Flask(__name__)
-app.register_blueprint(user_bp, url_prefix='/user')
-
-if __name__ == '__main__':
-    app.run(debug=True)
