@@ -45,7 +45,7 @@ def get_user(user_id):
     
     # 유저 정보가 존재하면 JSON 형태로 반환
     return jsonify({
-        'id': user.id,      # 유저의 ID
+        'id': user.id,      # 유저의 ID, ID는 입력 없을시 자동으로 숫자 부여
         'name': user.name,  # 유저의 이름
         'age': user.age,    # 유저의 나이
         'gender': user.gender,  # 유저의 성별
