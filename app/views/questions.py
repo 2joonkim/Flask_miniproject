@@ -6,10 +6,8 @@ questions_bp = Blueprint("questions", __name__)  # "questions"라는 이름의 �
 
 @questions_bp.route("/questions/<int:question_id>", methods=["GET"])
 def get_question_by_id(question_id):
-
-# 특정 질문 조회 API
-# 클라이언트가 특정 질문의 ID를 요청하면, 해당 질문 정보를 반환
-
+    # 특정 질문 조회 API
+    # 클라이언트가 특정 질문의 ID를 요청하면, 해당 질문 정보를 반환
     # 데이터베이스에서 질문 조회
     question = Question.query.get(question_id)
 
