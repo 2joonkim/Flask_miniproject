@@ -1,3 +1,24 @@
+'''
+#user 조회
+def get_user(user_id):
+    user = User.query.get(user_id)
+    return user
+
+#user 생성
+def create_user(name, age, gender, email):
+    user = User(
+        name=name,
+        age=age,
+        gender=gender,
+        email=email
+    )
+    db.session.add(user)
+    db.session.commit()
+    return user
+    
+'''
+
+
 from flask import Flask, request, jsonify
 from app.models import User
 from app import db
