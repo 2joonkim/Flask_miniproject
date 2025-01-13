@@ -14,11 +14,11 @@ def get_question_by_id(question_id):
     question = Question.query.get(question_id)
 
     if not question:
-        return jsonify({"error": "Question not found"}), 404
+        return jsonify({"error": "질문을 찾을 수 없습니다."}), 404
 
     # 질문 데이터를 JSON 형태로 반환
     return jsonify({
-        "id": question.id,              
+        "id": question.id,
         "title": question.title,         
         "is_active": question.is_active,  
         "sqe": question.sqe              
@@ -32,15 +32,15 @@ def create_new_question():
     # 요청 본문에서 JSON 데이터 가져오기
     data = request.get_json()
 
-    title = data.get("title") 
+    title = data.get("title")
 
     if not title:
-        return jsonify({"error": "The 'title' field is required"}), 400
+        return jsonify({"error": "'title'은 필수 입력 사항입니다."}), 400
 
     new_question = Question(
-        title=title,      
-        is_active=True,   
-        sqe=0            
+        title=title,
+        is_active=True,
+        sqe=0
     )
     
     # 데이터베이스 세션에 추가
@@ -54,4 +54,4 @@ def create_new_question():
         "id": new_question.id, 
         "title": new_question.title,
         "image": new_question.image.to_dict() if new_question.image else None
-    }), 201  
+    }), 201
