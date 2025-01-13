@@ -17,15 +17,15 @@ def create_user(name, age, gender, email):
     return user
 '''
 
-
-from flask import Flask, request, jsonify
+from flask import Flask, Blueprint, request, jsonify
 from app.models import User
 from app import db
 
-app = Flask(__name__)
+# Blueprint 생성
+user_bp = Blueprint('user', __name__)
 
 # 유저 생성 API
-@app.route('/create_user', methods=['POST'])
+@user_bp.route('/create_user', methods=['POST'])
 def create_user():
     # 요청에서 JSON 데이터를 받음
     data = request.get_json()
@@ -54,7 +54,7 @@ def create_user():
 
 
 # 유저 조회 API
-@app.route('/get_user/<int:user_id>', methods=['GET'])
+@user_bp.route('/get_user/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     # URL 경로에서 전달된 user_id를 이용해 유저를 데이터베이스에서 조회
     user = User.query.get(user_id)
@@ -65,9 +65,16 @@ def get_user(user_id):
     
     # 유저 정보가 존재하면 JSON 형태로 반환
     return jsonify({
-        'id': user.id,      # 유저의 ID, ID는 입력 없을시 자동으로 숫자 부여
+        'id': user.id,      # 유저의 ID, ID는 입력 없을 시 자동으로 숫자 부여
         'name': user.name,  # 유저의 이름
         'age': user.age,    # 유저의 나이
         'gender': user.gender,  # 유저의 성별
         'email': user.email  # 유저의 이메일
     }), 200
+
+# Flask 앱 생성 및 Blueprint 등록
+app = Flask(__name__)
+app.register_blueprint(user_bp, url_prefix='/user')
+
+if __name__ == '__main__':
+    app.run(debug=True)
