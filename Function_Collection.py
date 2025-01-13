@@ -49,7 +49,7 @@ def get_user(user_id):
     return user
 
 #user 생성
-def create_user(name. age, gender, email):
+def create_user(name, age, gender, email):
     user = User(
         name=name,
         age=age,
