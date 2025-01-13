@@ -59,3 +59,6 @@ def create_user(name. age, gender, email):
     db.session.add(user)
     db.session.commit()
     return user
+
+
+좋습니다.
