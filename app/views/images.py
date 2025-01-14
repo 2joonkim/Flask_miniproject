@@ -9,11 +9,20 @@ images_bp = Blueprint('images', __name__, url_prefix='/images')
 
 @images_bp.route("/images", methods=["POST"])
 def add_local_image():
-    # 로컬 디렉토리에서 이미지를 가져올 경로 설정
-    local_image_path = '경로/이미지'  # 로컬 이미지 파일 경로 (수정 필요)
+    base_dir = os.path.abspath(os.path.dirname(__file__))  # 현재 파일의 디렉토리 경로
+    image_files = [
+        'images_0.jpeg',
+        'images_1.jpeg',
+        'images_2.jpeg',
+        'images_3.jpeg',
+        'images_4.jpeg'
+    ]
+    # 각 이미지 파일에 대해 절대 경로를 생성하여 저장
+    for image_file in image_files:
+        local_image_path = os.path.join(base_dir, 'images', image_file)
 
-    if not os.path.exists(local_image_path):
-        return jsonify({"error": "이미지 파일을 찾을 수 없습니다."}), 404
+        if not os.path.exists(local_image_path):
+            return jsonify({"error": f"이미지 파일 '{image_file}'을 찾을 수 없습니다."}), 404
 
     # 이미지 정보를 데이터베이스에 저장
     new_image = Image(
