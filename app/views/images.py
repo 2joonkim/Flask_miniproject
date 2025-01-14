@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.models import Image
 from config import db
 
+# Blueprint 생성
 images_bp = Blueprint("images", __name__, url_prefix="/images")
 
 # 이미지 목록 조회

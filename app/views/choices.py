@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.models import Choices, Question
 from config import db
 
+# Blueprint 생성
 choices_bp = Blueprint("choices", __name__, url_prefix="/choices")
 
 # 선택지 목록 조회

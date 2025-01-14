@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.models import Answer, User, Choices
 from config import db
 
+# Blueprint 생성
 answers_bp = Blueprint("answers", __name__, url_prefix="/answers")
 
 # 응답 목록 조회
