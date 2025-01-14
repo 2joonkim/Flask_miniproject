@@ -1,14 +1,15 @@
 from flask import Flask, Blueprint, request, jsonify
 from app.models import User
 from app import db
+from flask_restx import Api
 
 app = Flask(__name__)
 
 # Blueprint 생성
-user_bp = Blueprint('user', __name__)
+users_bp = Blueprint('users', __name__)
 
 # 유저 생성 API
-@user_bp.route('/create_user', methods=['POST'])
+@users_bp.route('/create_user', methods=['POST'])
 def create_user():
     # 요청에서 JSON 데이터를 받음
     data = request.get_json()
@@ -37,7 +38,7 @@ def create_user():
 
 
 # 유저 조회 API
-@user_bp.route('/get_user/<int:user_id>', methods=['GET'])
+@users_bp.route('/get_user/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     # URL 경로에서 전달된 user_id를 이용해 유저를 데이터베이스에서 조회
     user = User.query.get(user_id)

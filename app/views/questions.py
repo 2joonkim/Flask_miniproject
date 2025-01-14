@@ -1,8 +1,11 @@
 from flask import Blueprint, jsonify, request
+from app import db
 from app.models import db, Question, Image  # 데이터베이스 모델 직접 사용
+from flask_restx import Api
 
 # Blueprint 생성
 questions_bp = Blueprint("questions", __name__)  # "questions"라는 이름의 블루프린트 생성
+api = Api(questions_bp)
 
 @questions_bp.route("/questions/<int:question_id>", methods=["GET"])
 def get_question_by_id(question_id):
@@ -22,7 +25,6 @@ def get_question_by_id(question_id):
         "sqe": question.sqe              
     }), 200
 
-
 @questions_bp.route("/questions", methods=["POST"])
 def create_new_question():
     # 질문 생성 API
@@ -30,7 +32,8 @@ def create_new_question():
     # 요청 본문에서 JSON 데이터 가져오기
     data = request.get_json()
 
-    title = data.get("title") 
+    title = data.get("title")
+    image_id = data.get("image_id") 
 
     if not title:
         return jsonify({"error": "The 'title' field is required"}), 400
@@ -41,6 +44,16 @@ def create_new_question():
         sqe=0            
     )
     
+    # 이미지가 존재하는지 확인하고 연결
+    image = Image.query.get(image_id) if image_id else None
+
+    new_question = Question(
+        title=title,
+        is_active=True,
+        sqe=0,
+        image_id=image.id if image else None  # 이미지가 있으면 연결
+    )
+
     # 데이터베이스 세션에 추가
     db.session.add(new_question)
 

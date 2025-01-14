@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from app import db
 from app.models import Image  # Image 모델 임포트
 import os
+from flask_restx import Api
 
 # 확장자 타입은 제외시켰습니다. 어차피 로컬에서 받을거라면 이미지 확장자를 이렇게 받을거다라고
 # 지정할 필요가 없어요

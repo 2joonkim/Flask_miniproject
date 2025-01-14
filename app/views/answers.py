@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app import db
 from app.models import User, Choices, Question  # Question 모델 임포트
+from flask_restx import Api
 
 # Blueprint 생성
 answers_bp = Blueprint('answers', __name__)

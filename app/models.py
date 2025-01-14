@@ -2,7 +2,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from enum import Enum
 
-from config import db
+from app.config import db
 
 KST = ZoneInfo("Asia/Seoul")
 

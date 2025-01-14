@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app import db
 from app.models import Question, Choices
+from flask_restx import Api
 
 #블루프린트 설정
 choices_bp = Blueprint('choices', __name__)
