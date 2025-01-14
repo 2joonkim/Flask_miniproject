@@ -5,9 +5,12 @@ from views.choices import choices_bp
 from views.users import users_bp
 
 def register_routes(app):
+    """
+    애플리케이션에 모든 Blueprint를 등록하는 함수.
+    """
     # Blueprint 등록
-    app.api.register_blueprint(images_bp, url_prefix='/images')
-    app.api.register_blueprint(questions_bp, url_prefix='/questions')
-    app.api.register_blueprint(answers_bp, url_prefix='/answers')
-    app.api.register_blueprint(choices_bp, url_prefix='/choices')
-    app.api.register_blueprint(users_bp, url_prefix='/users')
+    app.register_blueprint(images_bp, url_prefix='/images')
+    app.register_blueprint(questions_bp, url_prefix='/questions')
+    app.register_blueprint(answers_bp, url_prefix='/answers')
+    app.register_blueprint(choices_bp, url_prefix='/choices')
+    app.register_blueprint(users_bp, url_prefix='/users')

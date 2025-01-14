@@ -1,35 +1,36 @@
-from flask_smorest import Blueprint  # smorest의 Blueprint 사용
-from app import db
-from app.models import Answer, Question, User
-from flask import request, jsonify
+from flask import Blueprint, jsonify, request
+from app.models import Answer, User, Choices
+from config import db
 
-# Blueprint 생성 (smorest Blueprint 사용)
-answers_bp = Blueprint('answers', __name__, url_prefix='/answers')
+answers_bp = Blueprint("answers", __name__, url_prefix="/answers")
 
-@answers_bp.route('/questions/<int:question_id>/answers', methods=['POST'])
-def create_answer(question_id):
+# 응답 목록 조회
+@answers_bp.route("/", methods=["GET"])
+def get_answers():
+    answers = Answer.query.all()
+    return jsonify([ans.to_dict() for ans in answers]), 200
+
+# 응답 생성
+@answers_bp.route("/", methods=["POST"])
+def submit_answer():
     data = request.get_json()
+    user_id = data.get("user_id")
+    choice_id = data.get("choice_id")
 
-    # 질문을 찾기 + 질문이 없다면 404 오류 노출
-    question = Question.query.get_or_404(question_id)
+    if not user_id or not choice_id:
+        return jsonify({"error": "필수 데이터가 부족합니다."}), 400
 
-    # 유저 ID와 답변 내용 받기
-    user_id = data.get('user_id')
-    content = data.get('content')
+    # 사용자와 선택지 확인
+    user = User.query.get(user_id)
+    choice = Choices.query.get(choice_id)
 
-    # 유저가 없거나 내용이 없으면 오류 반환
-    if not user_id or not content:
-        return jsonify({"error": "유저 ID와 내용은 필수입니다."}), 400
+    if not user:
+        return jsonify({"error": "유효하지 않은 사용자 ID입니다."}), 400
+    if not choice:
+        return jsonify({"error": "유효하지 않은 선택지 ID입니다."}), 400
 
-    # 답변 생성
-    answer = Answer(
-        content=content,
-        user_id=user_id,
-        question_id=question.id
-    )
-
-    # 데이터베이스에 답변 추가
-    db.session.add(answer)
+    new_answer = Answer(user_id=user_id, choice_id=choice_id)
+    db.session.add(new_answer)
     db.session.commit()
 
-    return jsonify(answer.to_dict()), 201
+    return jsonify(new_answer.to_dict()), 201

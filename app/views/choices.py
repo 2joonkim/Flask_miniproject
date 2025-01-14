@@ -1,27 +1,33 @@
-from flask_smorest import Blueprint  # smorest의 Blueprint 사용
-from app import db
-from app.models import Question, Choices
-from flask import request, jsonify
+from flask import Blueprint, jsonify, request
+from app.models import Choices, Question
+from config import db
 
-# Blueprint 생성 (smorest Blueprint 사용)
-choices_bp = Blueprint('choices', __name__, url_prefix='/choices')
+choices_bp = Blueprint("choices", __name__, url_prefix="/choices")
 
-@choices_bp.route('/questions/<int:question_id>/choices', methods=['POST'])
-def create_choice(question_id):
+# 선택지 목록 조회
+@choices_bp.route("/", methods=["GET"])
+def get_choices():
+    choices = Choices.query.all()
+    return jsonify([choice.to_dict() for choice in choices]), 200
+
+# 선택지 생성
+@choices_bp.route("/", methods=["POST"])
+def create_choice():
     data = request.get_json()
+    content = data.get("content")
+    question_id = data.get("question_id")
+    sqe = data.get("sqe", 0)
 
-    # 질문을 찾기 + 질문이 없다면 404 오류 노출
-    question = Question.query.get_or_404(question_id)
+    if not content or not question_id:
+        return jsonify({"error": "필수 데이터가 부족합니다."}), 400
 
-    # 선택지 생성
-    choice = Choices(
-        content=data['content'],
-        sqe=data['sqe'],
-        question_id=question.id
-    )
+    # 질문 확인
+    question = Question.query.get(question_id)
+    if not question:
+        return jsonify({"error": "유효하지 않은 질문 ID입니다."}), 400
 
-    # 데이터베이스 추가
-    db.session.add(choice)
+    new_choice = Choices(content=content, question_id=question_id, sqe=sqe)
+    db.session.add(new_choice)
     db.session.commit()
 
-    return jsonify(choice.to_dict()), 201
+    return jsonify(new_choice.to_dict()), 201

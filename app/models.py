@@ -1,6 +1,6 @@
 from datetime import datetime
-from zoneinfo import ZoneInfo
 from enum import Enum
+from zoneinfo import ZoneInfo
 
 from config import db
 
@@ -61,7 +61,7 @@ class Image(BaseModel):
     url = db.Column(db.TEXT, nullable=False)
     type = db.Column(db.Enum(ImageStatus), nullable=False)
 
-    questions = db.relationship('Question', backref='questions_relationship', lazy=True)
+    questions = db.relationship("Question", back_populates="image")
 
     def to_dict(self):
         return {
@@ -78,9 +78,10 @@ class Question(BaseModel):
     title = db.Column(db.String(100), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
     sqe = db.Column(db.Integer, nullable=False)
+
     image_id = db.Column(db.Integer, db.ForeignKey("images.id"), nullable=False)
 
-    image = db.relationship('Image', backref='question_image', lazy=True)
+    image = db.relationship("Image", back_populates="questions")
 
     def to_dict(self):
         return {
@@ -88,7 +89,6 @@ class Question(BaseModel):
             "title": self.title,
             "is_active": self.is_active,
             "sqe": self.sqe,
-            'image_id': self.image_id,
             "image": self.image.to_dict() if self.image else None,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
