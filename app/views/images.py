@@ -1,19 +1,16 @@
-from flask import Blueprint, jsonify
+from flask_smorest import Blueprint  # smorest의 Blueprint 사용
 from app import db
-from app.models import Image  # Image 모델 임포트
+from app.models import Image
 import os
-from flask_restx import Api
+from flask import jsonify
 
-# 확장자 타입은 제외시켰습니다. 어차피 로컬에서 받을거라면 이미지 확장자를 이렇게 받을거다라고
-# 지정할 필요가 없어요
-# Blueprint 생성
-images_bp = Blueprint('images', __name__)
+# Blueprint 생성 (smorest Blueprint 사용)
+images_bp = Blueprint('images', __name__, url_prefix='/images')
 
-# 로컬에 있는 이미지 파일을 사용하여 데이터베이스에 저장하는 api 입니다.
 @images_bp.route("/images", methods=["POST"])
 def add_local_image():
     # 로컬 디렉토리에서 이미지를 가져올 경로 설정
-    local_image_path = '경로/이미지'  #로컬 이미지 파일 경로 (수정 필요)
+    local_image_path = '경로/이미지'  # 로컬 이미지 파일 경로 (수정 필요)
 
     if not os.path.exists(local_image_path):
         return jsonify({"error": "이미지 파일을 찾을 수 없습니다."}), 404
@@ -25,3 +22,5 @@ def add_local_image():
     )
     db.session.add(new_image)
     db.session.commit()
+
+    return jsonify(new_image.to_dict()), 201

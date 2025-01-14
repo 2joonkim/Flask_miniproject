@@ -6,8 +6,8 @@ from views.users import users_bp
 
 def register_routes(app):
     # Blueprint 등록
-    app.register_blueprint(images_bp, url_prefix='/api/images')
-    app.register_blueprint(questions_bp, url_prefix='/api/questions')
-    app.register_blueprint(answers_bp, url_prefix='/api/answers')
-    app.register_blueprint(choices_bp, url_prefix='/api/choices')
-    app.register_blueprint(users_bp, url_prefix='/api/users')
+    app.api.register_blueprint(images_bp, url_prefix='/images')
+    app.api.register_blueprint(questions_bp, url_prefix='/questions')
+    app.api.register_blueprint(answers_bp, url_prefix='/answers')
+    app.api.register_blueprint(choices_bp, url_prefix='/choices')
+    app.api.register_blueprint(users_bp, url_prefix='/users')

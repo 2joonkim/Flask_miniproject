@@ -1,10 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask_smorest import Blueprint  # smorest의 Blueprint 사용
 from app import db
 from app.models import Question, Choices
-from flask_restx import Api
+from flask import request, jsonify
 
-#블루프린트 설정
-choices_bp = Blueprint('choices', __name__)
+# Blueprint 생성 (smorest Blueprint 사용)
+choices_bp = Blueprint('choices', __name__, url_prefix='/api/choices')
 
 @choices_bp.route('/questions/<int:question_id>/choices', methods=['POST'])
 def create_choice(question_id):

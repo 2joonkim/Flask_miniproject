@@ -1,5 +1,4 @@
 from app import create_app
-from flask_restx import Api
 
 application = create_app()
 

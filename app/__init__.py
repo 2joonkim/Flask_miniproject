@@ -1,39 +1,39 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_restx import Api  # flask_restx로 변경
+from flask_smorest import Api  # smorest 임포트
+from config import db
 import app.models
 
-# 데이터베이스 초기화
-db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app(config_class="config.Config"):
+def create_app():
     application = Flask(__name__)
 
-    # 애플리케이션 설정
-    application.config.from_object(config_class)
-    application.secret_key = "oz_form_secret"
+    # config 설정을 애플리케이션에 적용
+    application.config.from_object("config.Config")
+    application.secret_key = application.config["SECRET_KEY"]  # 시크릿 키 설정
 
-    # 데이터베이스 초기화
+    # DB 초기화
     db.init_app(application)
+
+    # Migrate 초기화
     migrate.init_app(application, db)
 
-    # Swagger UI 설정 (Flask-RESTX API 객체 생성)
-    api = Api(application, version='1.0', title='API 테스트', description='테스트입니다')
+    # smorest API 설정
+    api = Api(application)  # OPENAPI_VERSION을 config에서 자동으로 불러옴
 
-    # Blueprint 등록
-    from views.images import images_bp
-    from views.questions import questions_bp
-    from views.answers import answers_bp
-    from views.choices import choices_bp
-    from views.users import users_bp
+    # 블루프린트 등록
+    from app.views.users import users_bp
+    from app.views.questions import questions_bp
+    from app.views.choices import choices_bp
+    from app.views.answers import answers_bp
+    from app.views.images import images_bp
 
-    # Blueprints를 URL 접두어와 함께 등록
-    application.register_blueprint(images_bp, url_prefix='/api/images')
-    application.register_blueprint(questions_bp, url_prefix='/api/questions')
-    application.register_blueprint(answers_bp, url_prefix='/api/answers')
-    application.register_blueprint(choices_bp, url_prefix='/api/choices')
-    application.register_blueprint(users_bp, url_prefix='/api/users')
+    # smorest의 API에서 블루프린트 등록
+    api.register_blueprint(users_bp)
+    api.register_blueprint(questions_bp)
+    api.register_blueprint(choices_bp)
+    api.register_blueprint(answers_bp)
+    api.register_blueprint(images_bp)
 
     return application
