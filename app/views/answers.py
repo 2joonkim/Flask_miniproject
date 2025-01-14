@@ -4,7 +4,7 @@ from app.models import Answer, Question, User
 from flask import request, jsonify
 
 # Blueprint 생성 (smorest Blueprint 사용)
-answers_bp = Blueprint('answers', __name__, url_prefix='/api/answers')
+answers_bp = Blueprint('answers', __name__, url_prefix='/answers')
 
 @answers_bp.route('/questions/<int:question_id>/answers', methods=['POST'])
 def create_answer(question_id):
