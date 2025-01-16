@@ -3,6 +3,8 @@ from views.questions import questions_bp
 from views.answers import answers_bp
 from views.choices import choices_bp
 from views.users import users_bp
+from views.stats_routes import stats_routes
+
 
 def register_routes(app):
     """
@@ -14,3 +16,4 @@ def register_routes(app):
     app.register_blueprint(answers_bp, url_prefix='/answers')
     app.register_blueprint(choices_bp, url_prefix='/choices')
     app.register_blueprint(users_bp, url_prefix='/users')
+    app.register_blueprint(stats_routes, url_prefix='/stat_routes')

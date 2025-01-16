@@ -8,6 +8,7 @@ from app.views.questions import questions_bp
 from app.views.images import images_bp
 from app.views.choices import choices_bp
 from app.views.answers import answers_bp
+from app.views.stats_routes import stats_routes
 
 import app.models
 
@@ -30,5 +31,6 @@ def create_app():
     application.register_blueprint(images_bp)
     application.register_blueprint(choices_bp)
     application.register_blueprint(answers_bp)
+    application.register_blueprint(stats_routes)
 
     return application
