@@ -9,7 +9,7 @@ from app.views.images import images_bp
 from app.views.choices import choices_bp
 from app.views.answers import answers_bp
 from app.views.stats_routes import stats_routes
-from views.connect import connect_bp
+from app.views.connect import connect_bp
 
 import app.models
 
