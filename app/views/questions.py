@@ -6,7 +6,7 @@ from config import db
 questions_bp = Blueprint("questions", __name__, url_prefix="/questions")
 
 # 질문 목록 조회
-@questions_bp.route("/", methods=["GET"])
+@questions_bp.route("/get", methods=["GET"])
 def get_questions():
     questions = Question.query.all()
     return jsonify([q.to_dict() for q in questions]), 200
