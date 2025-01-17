@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.models import Question, Image
 from config import db
+from collections import OrderedDict
 
 # Blueprint 생성
 questions_bp = Blueprint("question", __name__, url_prefix="/question")
@@ -62,12 +63,12 @@ def get_question_by_id(question_id):
     # 이미지 데이터 조회
     image = Image.query.get(question.image_id)
 
-    # 질문 데이터 생성
-    question_data = {
-        "id": question.id,
-        "title": question.title,
-        "image": {"url": image.url} if image else None,  # 이미지가 존재하면 URL 포함
-    }
+    # 질문 데이터 생성 (순서 지정)
+    question_data = OrderedDict([
+        ("id", question.id),
+        ("title", question.title),
+        ("image", {"url": image.url} if image else None)
+    ])
 
     # 응답 데이터 반환
     return jsonify({"question": question_data}), 200
