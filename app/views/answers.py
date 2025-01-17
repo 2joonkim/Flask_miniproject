@@ -1,5 +1,5 @@
-from flask import Blueprint, jsonify, request
-from app.models import Answer
+from flask import Blueprint, request, jsonify
+from app.models import Answer, User, Choices
 from config import db
 
 answers_bp = Blueprint("answers", __name__, url_prefix="/submit")
@@ -14,21 +14,32 @@ def submit_answers():
 
     try:
         for entry in data:
-            # entry 출력
-            print(entry)  # entry를 콘솔에 출력
+            # user_id와 choice_id를 확인
+            user_id = entry.get("userId")
+            choice_id = entry.get("choiceId")
 
-            # 각 entry에서 'userId'와 'choiceId'가 유효한지 확인
-            if not entry.get("userId") or not entry.get("choiceId"):
+            if not user_id or not choice_id:
                 return jsonify({"error": "Missing userId or choiceId in entry"}), 400
 
-            # 데이터베이스에 저장
-            db.session.add(Answer(user_id=entry["userId"], choice_id=entry["choiceId"]))
+            # 유효한 user_id인지 확인
+            user = User.query.get(user_id)
+            if not user:
+                return jsonify({"error": "Invalid userId"}), 400
 
-        # 커밋
+            # 유효한 choice_id인지 확인
+            choice = Choices.query.get(choice_id)
+            if not choice:
+                return jsonify({"error": "Invalid choiceId"}), 400
+
+            # Answer 모델에 저장
+            new_answer = Answer(user_id=user_id, choice_id=choice_id)
+            db.session.add(new_answer)
+
+        # 데이터베이스에 저장
         db.session.commit()
 
-        # 성공 응답 반환
         return jsonify({"message": "Data successfully saved!"}), 201
+
     except Exception as e:
-        db.session.rollback()  # 트랜잭션 롤백
+        db.session.rollback()  # 예외 발생 시 롤백
         return jsonify({"error": str(e)}), 500  # 예외 처리
