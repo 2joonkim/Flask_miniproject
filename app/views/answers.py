@@ -9,7 +9,9 @@ answers_bp = Blueprint("answers", __name__, url_prefix="/submit")
 @answers_bp.route("/", methods=["GET"])
 def get_answers():
     answers = Answer.query.all()
-    return jsonify([ans.to_dict() for ans in answers]), 200
+    # 요구된 형식으로 응답 데이터 변환
+    result = [{"userId": ans.user_id, "choiceId": ans.choice_id} for ans in answers]
+    return jsonify(result), 200
 
 # 응답 생성
 @answers_bp.route("", methods=["POST"])
