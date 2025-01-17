@@ -2,12 +2,8 @@ from flask_smorest import Blueprint
 from app import db
 from app.models import User, AgeStatus, GenderStatus
 from flask import request, jsonify
-from flask_cors import CORS
 
 users_bp = Blueprint('users', __name__, url_prefix='/signup')
-
-# Flask 앱 전체에 CORS 설정 추가
-CORS(users_bp, resources={r"/*": {"origins": "https://oz-flask-form.vercel.app", "supports_credentials": True}})
 
 @users_bp.route('', methods=['POST'])
 def signup():
