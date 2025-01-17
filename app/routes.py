@@ -12,7 +12,7 @@ def register_routes(app):
     애플리케이션에 모든 Blueprint를 등록하는 함수.
     """
     # Blueprint 등록
-    app.register_blueprint(images_bp, url_prefix='/images')
+    app.register_blueprint(images_bp, url_prefix='/image')
     app.register_blueprint(questions_bp, url_prefix='/questions')
     app.register_blueprint(answers_bp, url_prefix='/answers')
     app.register_blueprint(choices_bp, url_prefix='/choices')

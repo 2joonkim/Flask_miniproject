@@ -3,7 +3,7 @@ from app.models import Image, ImageStatus
 from config import db
 
 # Blueprint 생성
-images_bp = Blueprint("images", __name__, url_prefix="/images")
+images_bp = Blueprint("image", __name__, url_prefix="/image")
 
 # 메인 이미지 조회
 @images_bp.route("/main", methods=["GET"])
