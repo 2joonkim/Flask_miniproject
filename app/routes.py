@@ -15,7 +15,7 @@ def register_routes(app):
     app.register_blueprint(images_bp, url_prefix='/image')
     app.register_blueprint(questions_bp, url_prefix='/question')
     app.register_blueprint(answers_bp, url_prefix='/answers')
-    app.register_blueprint(choices_bp, url_prefix='/choices')
+    app.register_blueprint(choices_bp, url_prefix='/choice')
     app.register_blueprint(users_bp, url_prefix='/signup')   
     app.register_blueprint(stats_routes, url_prefix='/stat_routes')
     app.register_blueprint(connect_bp)

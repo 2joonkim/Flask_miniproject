@@ -1,6 +1,8 @@
 from config import db
 from flask import Flask
 from flask_migrate import Migrate
+from flask_cors import CORS  # Import CORS
+
 
 # API 블루프린트 임포트
 from app.views.users import users_bp
@@ -25,6 +27,8 @@ def create_app():
     # 데이터베이스 및 마이그레이션 초기화
     db.init_app(application)
     migrate.init_app(application, db)
+
+    CORS(application, resources={r"/*": {"origins": ["https://oz-flask-form.vercel.app"], "supports_credentials": True}})
 
     # 블루프린트 등록
     application.register_blueprint(users_bp)

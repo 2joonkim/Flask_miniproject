@@ -3,7 +3,7 @@ from app.models import Choices, Question
 from config import db
 
 # Blueprint 생성
-choices_bp = Blueprint("choices", __name__, url_prefix="/choices")
+choices_bp = Blueprint("choice", __name__, url_prefix="/choice")
 
 # 특정 질문의 선택지 목록 조회
 @choices_bp.route("/<int:question_id>", methods=["GET"])
