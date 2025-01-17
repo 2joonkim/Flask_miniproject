@@ -49,3 +49,18 @@ def create_choice():
     db.session.commit()
 
     return jsonify(new_choice.to_dict()), 201
+
+# 선택지 삭제
+@choices_bp.route("/<int:question_id>", methods=["DELETE"])
+def delete_choices_by_question(question_id):
+    # 해당 질문 ID의 모든 선택지 삭제
+    choices = Choices.query.filter_by(question_id=question_id).all()
+    
+    if not choices:
+        return jsonify({"error": "해당 질문에 선택지가 없습니다."}), 404
+
+    for choice in choices:
+        db.session.delete(choice)
+
+    db.session.commit()
+    return jsonify({"message": f"질문 ID {question_id}의 모든 선택지가 삭제되었습니다."}), 200
