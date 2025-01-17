@@ -50,3 +50,23 @@ def create_question():
     db.session.commit()
 
     return jsonify(new_question.to_dict()), 201
+
+# 특정 질문 조회
+@questions_bp.route("/<int:question_id>", methods=["GET"])
+def get_question_by_id(question_id):
+    # 질문 데이터 조회
+    question = Question.query.get(question_id)
+    if not question:
+        return jsonify({"error": "질문을 찾을 수 없습니다."}), 404
+
+    # 이미지 데이터 조회
+    image = Image.query.get(question.image_id)
+
+    # 질문 데이터 생성
+    question_data = {
+        "id": question.id,
+        "title": question.title,
+        "image": {"url": image.url} if image else None,  # 이미지가 존재하면 URL 포함
+    }
+
+    return jsonify({"question": question_data}), 200
