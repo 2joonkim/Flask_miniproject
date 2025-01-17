@@ -3,7 +3,7 @@ from app.models import Answer, User, Choices
 from config import db
 
 # Blueprint 생성
-answers_bp = Blueprint("answers", __name__, url_prefix="/answers")
+answers_bp = Blueprint("answers", __name__, url_prefix="/submit")
 
 # 응답 목록 조회
 @answers_bp.route("/", methods=["GET"])
@@ -12,7 +12,7 @@ def get_answers():
     return jsonify([ans.to_dict() for ans in answers]), 200
 
 # 응답 생성
-@answers_bp.route("/submit", methods=["POST"])
+@answers_bp.route("", methods=["POST"])
 def submit_answer():
     data = request.get_json()
     user_id = data.get("user_id")
