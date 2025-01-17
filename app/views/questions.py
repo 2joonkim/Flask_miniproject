@@ -52,9 +52,6 @@ def create_question():
 
     return jsonify(new_question.to_dict()), 201
 
-# Blueprint 생성
-questions_bp = Blueprint("question", __name__, url_prefix="/question")
-
 # 특정 질문 조회
 @questions_bp.route("/<int:question_id>", methods=["GET"])
 def get_question_by_id(question_id):
