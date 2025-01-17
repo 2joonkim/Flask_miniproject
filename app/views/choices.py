@@ -1,66 +1,48 @@
 from flask import Blueprint, jsonify, request
-from app.models import Choices, Question
+from app.models import Answer, User, Choices
 from config import db
 
 # Blueprint 생성
-choices_bp = Blueprint("choice", __name__, url_prefix="/choice")
+answers_bp = Blueprint("answer", __name__, url_prefix="/submit")
 
-# 특정 질문의 선택지 목록 조회
-@choices_bp.route("/<int:question_id>", methods=["GET"])
-def get_choices_by_question(question_id):
-    # 해당 질문의 선택지 가져오기
-    choices = Choices.query.filter_by(question_id=question_id).all()
-
-    # 질문 유효성 검증
-    if not choices:
-        question = Question.query.get(question_id)
-        if not question:
-            return jsonify({"error": "유효하지 않은 질문 ID입니다."}), 404
-
-    # 선택지 리스트 반환
-    return jsonify({
-        "choices": [
-            {
-                "id": choice.id,
-                "content": choice.content,
-                "is_active": choice.is_active
-            } for choice in choices
-        ]
-    }), 200
-
-# 선택지 생성
-@choices_bp.route("/", methods=["POST"])
-def create_choice():
+# 사용자 답변 생성
+@answers_bp.route("", methods=["POST"])
+def create_answer():
     data = request.get_json()
-    content = data.get("content")
-    question_id = data.get("question_id")
-    sqe = data.get("sqe", 0)
 
-    if not content or not question_id:
-        return jsonify({"error": "필수 데이터가 부족합니다."}), 400
+    if not isinstance(data, list):
+        return jsonify({"error": "요청 바디는 배열 형식이어야 합니다."}), 400
 
-    # 질문 확인
-    question = Question.query.get(question_id)
-    if not question:
-        return jsonify({"error": "유효하지 않은 질문 ID입니다."}), 400
+    # 저장된 사용자 ID를 추적 (첫 번째 사용자 ID로 메시지를 반환하기 위해)
+    saved_user_id = None
 
-    new_choice = Choices(content=content, question_id=question_id, sqe=sqe)
-    db.session.add(new_choice)
+    for entry in data:
+        user_id = entry.get("userId")
+        choice_id = entry.get("choiceId")
+
+        # 필수 데이터 확인
+        if not user_id or not choice_id:
+            return jsonify({"error": "userId와 choiceId는 필수입니다."}), 400
+
+        # 사용자 및 선택지 확인
+        user = User.query.get(user_id)
+        choice = Choices.query.get(choice_id)
+
+        if not user:
+            return jsonify({"error": f"유효하지 않은 사용자 ID: {user_id}"}), 400
+        if not choice:
+            return jsonify({"error": f"유효하지 않은 선택지 ID: {choice_id}"}), 400
+
+        # 답변 생성
+        new_answer = Answer(user_id=user_id, choice_id=choice_id)
+        db.session.add(new_answer)
+
+        # 첫 번째 사용자 ID 저장
+        if saved_user_id is None:
+            saved_user_id = user_id
+
+    # 커밋
     db.session.commit()
 
-    return jsonify(new_choice.to_dict()), 201
-
-# 선택지 삭제
-@choices_bp.route("/<int:question_id>", methods=["DELETE"])
-def delete_choices_by_question(question_id):
-    # 해당 질문 ID의 모든 선택지 삭제
-    choices = Choices.query.filter_by(question_id=question_id).all()
-    
-    if not choices:
-        return jsonify({"error": "해당 질문에 선택지가 없습니다."}), 404
-
-    for choice in choices:
-        db.session.delete(choice)
-
-    db.session.commit()
-    return jsonify({"message": f"질문 ID {question_id}의 모든 선택지가 삭제되었습니다."}), 200
+    # 응답 메시지
+    return jsonify({"message": f"User: {saved_user_id}'s answers Success Create"}), 201
