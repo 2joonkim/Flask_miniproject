@@ -3,9 +3,9 @@ from app.models import Answer, User, Choices
 from config import db
 
 # Blueprint 생성
-submit_bp = Blueprint("submit", __name__, url_prefix="/submit")
+answers_bp = Blueprint("submit", __name__, url_prefix="/submit")
 
-@submit_bp.route("/", methods=["POST"])
+@answers_bp.route("/", methods=["POST"])
 def submit_answers():
     data = request.get_json()
 
