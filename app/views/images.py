@@ -7,13 +7,13 @@ images_bp = Blueprint("images", __name__, url_prefix="/images")
 
 # 메인 이미지 조회
 @images_bp.route("/main", methods=["GET"])
-def get_main_images():
-    try:
-        # "type" 필드가 "main"인 이미지만 가져옴
-        main_images = Image.query.filter_by(type=ImageStatus.main).all()
-        return jsonify([img.to_dict() for img in main_images]), 200
-    except Exception as e:
-        return jsonify({"error": f"서버 오류가 발생했습니다: {str(e)}"}), 500
+def get_main_image():
+    main_image = Image.query.filter_by(type="main").first()
+    if not main_image:
+        return jsonify({"error": "메인 이미지를 찾을 수 없습니다."}), 404
+
+    # URL만 포함한 데이터 반환
+    return jsonify({"image": main_image.url}), 200
 
 # 이미지 업로드
 @images_bp.route("/", methods=["POST"])
