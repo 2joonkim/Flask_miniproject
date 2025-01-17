@@ -4,11 +4,11 @@ from app.models import User, AgeStatus, GenderStatus
 from flask import request, jsonify
 
 # Blueprint 생성
-users_bp = Blueprint('users', __name__, url_prefix='/users')
+users_bp = Blueprint('users', __name__, url_prefix='/signup')
 
-# 유저 생성 API
-@users_bp.route('/create_user', methods=['POST'])
-def create_user():
+# 회원가입 API
+@users_bp.route('', methods=['POST'])
+def signup():
     data = request.get_json()
 
     # 필수 입력 값 검증
@@ -43,12 +43,12 @@ def create_user():
     db.session.commit()
 
     return jsonify({
-        'message': '유저 생성이 완료되었습니다.',
+        'message': '회원가입이 완료되었습니다.',
         'user': new_user.to_dict()
     }), 201
 
 # 유저 조회 API
-@users_bp.route('/get_user/<int:user_id>', methods=['GET'])
+@users_bp.route('/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     user = User.query.get(user_id)
 

@@ -12,7 +12,7 @@ def get_answers():
     return jsonify([ans.to_dict() for ans in answers]), 200
 
 # 응답 생성
-@answers_bp.route("/", methods=["POST"])
+@answers_bp.route("/submit", methods=["POST"])
 def submit_answer():
     data = request.get_json()
     user_id = data.get("user_id")
@@ -30,8 +30,12 @@ def submit_answer():
     if not choice:
         return jsonify({"error": "유효하지 않은 선택지 ID입니다."}), 400
 
+    # 새 응답 생성
     new_answer = Answer(user_id=user_id, choice_id=choice_id)
     db.session.add(new_answer)
     db.session.commit()
 
-    return jsonify(new_answer.to_dict()), 201
+    # 요청된 user_id로 메시지 응답
+    return jsonify({
+        "message": f"User: {user_id}'s answers Success Create"
+    }), 201

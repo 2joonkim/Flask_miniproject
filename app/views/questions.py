@@ -9,7 +9,25 @@ questions_bp = Blueprint("questions", __name__, url_prefix="/questions")
 @questions_bp.route("/get", methods=["GET"])
 def get_questions():
     questions = Question.query.all()
-    return jsonify([q.to_dict() for q in questions]), 200
+
+    # 질문 데이터를 이미지 URL과 함께 반환
+    result = []
+    for q in questions:
+        image = Image.query.get(q.image_id)  # 이미지 ID를 사용하여 이미지 조회
+        question_data = {
+            "id": q.id,
+            "title": q.title,
+            "image": {"url": image.url} if image else None,  # 이미지가 존재하면 URL 포함
+        }
+        result.append(question_data)
+
+    return jsonify(result), 200
+
+# 질문 개수 확인
+@questions_bp.route("/count", methods=["GET"])
+def get_question_count():
+    total_questions = Question.query.count()  # 총 질문 개수 계산
+    return jsonify({"total": total_questions}), 200
 
 # 질문 생성
 @questions_bp.route("/", methods=["POST"])

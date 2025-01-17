@@ -5,11 +5,28 @@ from config import db
 # Blueprint 생성
 choices_bp = Blueprint("choices", __name__, url_prefix="/choices")
 
-# 선택지 목록 조회
-@choices_bp.route("/", methods=["GET"])
-def get_choices():
-    choices = Choices.query.all()
-    return jsonify([choice.to_dict() for choice in choices]), 200
+# 특정 질문의 선택지 목록 조회
+@choices_bp.route("/<int:question_id>", methods=["GET"])
+def get_choices_by_question(question_id):
+    # 해당 질문의 선택지 가져오기
+    choices = Choices.query.filter_by(question_id=question_id).all()
+
+    # 질문 유효성 검증
+    if not choices:
+        question = Question.query.get(question_id)
+        if not question:
+            return jsonify({"error": "유효하지 않은 질문 ID입니다."}), 404
+
+    # 선택지 리스트 반환
+    return jsonify({
+        "choices": [
+            {
+                "id": choice.id,
+                "content": choice.content,
+                "is_active": choice.is_active
+            } for choice in choices
+        ]
+    }), 200
 
 # 선택지 생성
 @choices_bp.route("/", methods=["POST"])
