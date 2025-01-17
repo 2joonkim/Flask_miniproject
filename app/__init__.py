@@ -1,6 +1,7 @@
 from config import db
 from flask import Flask
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 
 # API 블루프린트 임포트
@@ -18,6 +19,8 @@ migrate = Migrate()
 
 def create_app():
     application = Flask(__name__)
+
+    CORS(app, resources={r"/*": {"origins": ["https://oz-flask-form.vercel.app"], "supports_credentials": True}})
 
     # 애플리케이션 설정
     application.config.from_object("config.Config")
