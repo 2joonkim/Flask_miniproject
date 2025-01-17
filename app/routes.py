@@ -13,7 +13,7 @@ def register_routes(app):
     """
     # Blueprint 등록
     app.register_blueprint(images_bp, url_prefix='/image')
-    app.register_blueprint(questions_bp, url_prefix='/questions')
+    app.register_blueprint(questions_bp, url_prefix='/question')
     app.register_blueprint(answers_bp, url_prefix='/answers')
     app.register_blueprint(choices_bp, url_prefix='/choices')
     app.register_blueprint(users_bp, url_prefix='/signup')   

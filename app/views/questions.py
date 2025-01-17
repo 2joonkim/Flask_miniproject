@@ -3,7 +3,7 @@ from app.models import Question, Image
 from config import db
 
 # Blueprint 생성
-questions_bp = Blueprint("questions", __name__, url_prefix="/questions")
+questions_bp = Blueprint("question", __name__, url_prefix="/question")
 
 # 질문 목록 조회
 @questions_bp.route("/get", methods=["GET"])
