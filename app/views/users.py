@@ -2,14 +2,12 @@ from flask_smorest import Blueprint
 from app import db
 from app.models import User, AgeStatus, GenderStatus
 from flask import request, jsonify
-from flask_cors import cross_origin  # CORS 관련
+from flask_cors import cross_origin
 
-# Blueprint 생성
 users_bp = Blueprint('users', __name__, url_prefix='/signup')
 
-# 회원가입 API
 @users_bp.route('', methods=['POST'])
-@cross_origin(origins="*")  # CORS 허용 (특정 도메인을 지정하거나 "*"로 모든 도메인 허용)
+@cross_origin(origins="https://oz-flask-form.vercel.app", supports_credentials=True)
 def signup():
     try:
         data = request.get_json()
@@ -52,20 +50,4 @@ def signup():
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': f'서버 오류가 발생했습니다: {str(e)}'}), 500
-
-
-# 유저 조회 API
-@users_bp.route('/<int:user_id>', methods=['GET'])
-@cross_origin(origins="*")  # CORS 허용
-def get_user(user_id):
-    try:
-        user = User.query.get(user_id)
-
-        if not user:
-            return jsonify({'error': '유저를 찾을 수 없습니다.'}), 404
-
-        return jsonify(user.to_dict()), 200
-
-    except Exception as e:
         return jsonify({'error': f'서버 오류가 발생했습니다: {str(e)}'}), 500
