@@ -43,7 +43,7 @@ def signup():
 
         return jsonify({
             'message': '회원가입이 완료되었습니다.',
-            'user': new_user.to_dict()
+            'user': new_user.id
         }), 201
 
     except Exception as e:
