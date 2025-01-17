@@ -5,6 +5,7 @@ from views.choices import choices_bp
 from views.users import users_bp
 from views.stats_routes import stats_routes
 from views.connect import connect_bp
+from views.questions_1 import questions_1_bp
 
 
 def register_routes(app):
@@ -19,3 +20,5 @@ def register_routes(app):
     app.register_blueprint(users_bp, url_prefix='/signup')   
     app.register_blueprint(stats_routes, url_prefix='/stat_routes')
     app.register_blueprint(connect_bp)
+    app.register_blueprint(stats_routes, url_prefix='/questions')
+    

@@ -24,12 +24,6 @@ def get_questions():
 
     return jsonify(result), 200
 
-# 질문 개수 확인
-@questions_bp.route("/count", methods=["GET"])
-def get_question_count():
-    total_questions = Question.query.count()  # 총 질문 개수 계산
-    return jsonify({"total": total_questions}), 200
-
 # 질문 생성
 @questions_bp.route("/", methods=["POST"])
 def create_question():

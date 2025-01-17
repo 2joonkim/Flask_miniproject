@@ -11,6 +11,7 @@ from app.views.choices import choices_bp
 from app.views.answers import answers_bp
 from app.views.stats_routes import stats_routes
 from app.views.connect import connect_bp
+from app.views.questions_1 import questions_1_bp
 
 import app.models
 
@@ -35,5 +36,6 @@ def create_app():
     application.register_blueprint(answers_bp)
     application.register_blueprint(stats_routes)
     application.register_blueprint(connect_bp)
+    application.register_blueprint(questions_1_bp)
 
     return application
