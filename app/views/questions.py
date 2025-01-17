@@ -69,4 +69,5 @@ def get_question_by_id(question_id):
         "image": {"url": image.url} if image else None,  # 이미지가 존재하면 URL 포함
     }
 
+    # 응답 데이터 반환
     return jsonify({"question": question_data}), 200
